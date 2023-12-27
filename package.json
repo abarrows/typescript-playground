@@ -3,24 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env FORCE_COLOR=1 next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "analyze": "cross-env ANALYZE=true yarn build",
-    "storybook": "cross-env FORCE_COLOR=1 storybook dev -p 6006",
-    "test-storybook": "cross-env FORCE_COLOR=1 test-storybook",
+    "build": "next build",
     "build-storybook": "cross-env FORCE_COLOR=1 storybook build",
-    "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
+    "coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg",
+    "dev": "cross-env FORCE_COLOR=1 next dev",
     "e2e:headless": "playwright test",
     "e2e:ui": "playwright test --ui",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "preinstall": "npx npm-only-allow@latest --PM yarn",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "lint:js:rules:unused": "yarn run eslint-find-rules --current .eslintrc.js app/layout.tsx --unused --plugin",
     "postinstall": "npx patch-package -y",
-    "coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
+    "preinstall": "npx npm-only-allow@latest --PM yarn",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "start": "next start",
+    "storybook": "cross-env FORCE_COLOR=1 storybook dev -p 6006",
+    "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
+    "test-storybook": "cross-env FORCE_COLOR=1 test-storybook"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^14.0.3",
@@ -76,13 +77,14 @@
     "@storybook/react": "^7.5.3",
     "@storybook/test-runner": "^0.15.2",
     "@storybook/testing-library": "^0.2.2",
-    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^14.1.2",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@types/jest": "^29.5.10",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
+    "@types/testing-library__jest-dom": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
     "all-contributors-cli": "^6.26.1",
@@ -91,8 +93,9 @@
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-config-react-app": "^7.0.1",
+    "eslint-find-rules": "^4.1.0",
     "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-tailwindcss": "^3.13.0",
@@ -116,7 +119,7 @@
     "webpack": "5.89.0"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.9.0"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@4.0.2"
 }

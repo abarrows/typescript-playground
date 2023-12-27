@@ -3,10 +3,10 @@ const fs = require("fs")
 
 module.exports = {
   extends: [
-    "next",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
     "prettier",
-    "react-app",
-    "react-app/jest",
+    "plugin:jest/recommended",
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
   ],
