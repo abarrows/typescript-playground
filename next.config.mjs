@@ -1,6 +1,22 @@
 import withBundleAnalyzer from "@next/bundle-analyzer"
 import withPlugins from "next-compose-plugins"
 import { env } from "./env.mjs"
+/* eslint-disable @typescript-eslint/no-var-requires */
+// Importing consola for logging.
+import consola from "consola"
+
+consola
+  .withDefaults({
+    badge: true,
+    formatOptions: {
+      date: true,
+      colors: true,
+      compact: true,
+      col: 10,
+    },
+  })
+  .withTag("ChatGPT")
+  .wrapConsole()
 
 /**
  * @type {import('next').NextConfig}
