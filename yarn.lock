@@ -64,7 +64,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.0.0, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.18.9, @babel/core@npm:^7.22.5, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.3, @babel/core@npm:^7.7.5":
+"@babel/core@npm:^7.0.0, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.18.9, @babel/core@npm:^7.21.8, @babel/core@npm:^7.22.5, @babel/core@npm:^7.23.0, @babel/core@npm:^7.23.2, @babel/core@npm:^7.23.3, @babel/core@npm:^7.7.5":
   version: 7.23.6
   resolution: "@babel/core@npm:7.23.6"
   dependencies:
@@ -87,7 +87,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.22.5, @babel/generator@npm:^7.23.0, @babel/generator@npm:^7.23.6, @babel/generator@npm:^7.7.2":
+"@babel/generator@npm:^7.21.5, @babel/generator@npm:^7.22.5, @babel/generator@npm:^7.23.0, @babel/generator@npm:^7.23.6, @babel/generator@npm:^7.7.2":
   version: 7.23.6
   resolution: "@babel/generator@npm:7.23.6"
   dependencies:
@@ -359,7 +359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.22.15, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.6":
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.21.8, @babel/parser@npm:^7.22.15, @babel/parser@npm:^7.23.0, @babel/parser@npm:^7.23.6":
   version: 7.23.6
   resolution: "@babel/parser@npm:7.23.6"
   bin:
@@ -1517,7 +1517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.18.9, @babel/traverse@npm:^7.23.2, @babel/traverse@npm:^7.23.6":
+"@babel/traverse@npm:^7.18.9, @babel/traverse@npm:^7.21.5, @babel/traverse@npm:^7.23.2, @babel/traverse@npm:^7.23.6":
   version: 7.23.6
   resolution: "@babel/traverse@npm:7.23.6"
   dependencies:
@@ -1535,7 +1535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.18.9, @babel/types@npm:^7.20.7, @babel/types@npm:^7.22.15, @babel/types@npm:^7.22.19, @babel/types@npm:^7.22.5, @babel/types@npm:^7.23.0, @babel/types@npm:^7.23.4, @babel/types@npm:^7.23.6, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.18.9, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.5, @babel/types@npm:^7.22.15, @babel/types@npm:^7.22.19, @babel/types@npm:^7.22.5, @babel/types@npm:^7.23.0, @babel/types@npm:^7.23.4, @babel/types@npm:^7.23.6, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
   version: 7.23.6
   resolution: "@babel/types@npm:7.23.6"
   dependencies:
@@ -1886,6 +1886,26 @@ __metadata:
   version: 2.0.1
   resolution: "@humanwhocodes/object-schema@npm:2.0.1"
   checksum: 9dba24e59fdb4041829d92b693aacb778add3b6f612aaa9c0774f3b650c11a378cc64f042a59da85c11dae33df456580a3c36837b953541aed6ff94294f97fac
+  languageName: node
+  linkType: hard
+
+"@ianvs/prettier-plugin-sort-imports@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@ianvs/prettier-plugin-sort-imports@npm:4.1.1"
+  dependencies:
+    "@babel/core": "npm:^7.21.8"
+    "@babel/generator": "npm:^7.21.5"
+    "@babel/parser": "npm:^7.21.8"
+    "@babel/traverse": "npm:^7.21.5"
+    "@babel/types": "npm:^7.21.5"
+    semver: "npm:^7.5.2"
+  peerDependencies:
+    "@vue/compiler-sfc": ">=3.0.0"
+    prettier: 2 || 3
+  peerDependenciesMeta:
+    "@vue/compiler-sfc":
+      optional: true
+  checksum: 3e630d2d8d0ef6ba5f19d5a8edd4053e154656e5c54dec7d7dc9c012bf389ddfce3b9c038a46634b66be21679dbfa3048e0df0fa5ba6fb0462fdff625a5247ec
   languageName: node
   linkType: hard
 
@@ -7660,6 +7680,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"atlassian-jwt@npm:^2.0.2":
+  version: 2.0.3
+  resolution: "atlassian-jwt@npm:2.0.3"
+  dependencies:
+    jsuri: "npm:^1.3.1"
+    lodash: "npm:^4.17.21"
+  checksum: 241fc1d138e5dbf957f5d36e511b10641a377dbc55aa57fc0d73a3de920d70982927b13529a288425e8c3698d1101caa31ec073cc73789d9d49de90cf525c25e
+  languageName: node
+  linkType: hard
+
 "autoprefixer@npm:^10.4.16":
   version: 10.4.16
   resolution: "autoprefixer@npm:10.4.16"
@@ -7698,6 +7728,17 @@ __metadata:
   dependencies:
     follow-redirects: "npm:^1.14.0"
   checksum: fbcff55ec68f71f02d3773d467db2fcecdf04e749826c82c2427a232f9eba63242150a05f15af9ef15818352b814257541155de0281f8fb2b7e8a5b79f7f2142
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.2":
+  version: 1.6.3
+  resolution: "axios@npm:1.6.3"
+  dependencies:
+    follow-redirects: "npm:^1.15.0"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: dcc6d982353db33e6893ef01cdf81d0a0548dbd8fba0cb046dc4aee1a6a16226721faa4c2a13b2673d47130509629cdb93bb991b3a2bd4ef17a5ac27a8bba0da
   languageName: node
   linkType: hard
 
@@ -8929,6 +8970,19 @@ __metadata:
     ini: "npm:^1.3.4"
     proto-list: "npm:~1.2.1"
   checksum: 39d1df18739d7088736cc75695e98d7087aea43646351b028dfabd5508d79cf6ef4c5bcd90471f52cd87ae470d1c5490c0a8c1a292fbe6ee9ff688061ea0963e
+  languageName: node
+  linkType: hard
+
+"confluence.js@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "confluence.js@npm:1.7.2"
+  dependencies:
+    atlassian-jwt: "npm:^2.0.2"
+    axios: "npm:^1.6.2"
+    form-data: "npm:^4.0.0"
+    oauth: "npm:^0.10.0"
+    tslib: "npm:^2.6.2"
+  checksum: ccd19429ad0d8005576d6a8dfe6dd6301c9f1ba24305075c2f547c8eb3a32d3428f19d4202ff2b9a19967620b08992548d3f905b5a678ad08cd9019afc16f60d
   languageName: node
   linkType: hard
 
@@ -11364,7 +11418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.0":
+"follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.0":
   version: 1.15.3
   resolution: "follow-redirects@npm:1.15.3"
   peerDependenciesMeta:
@@ -14104,6 +14158,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsuri@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "jsuri@npm:1.3.1"
+  checksum: 74548df76fce0b93918c3f99766b8771d8a3cacf5700f6f44d798da62f5a04ef121e09e33cdcc096ff6e10c5fedd7498dce0b7b267c55f2518f5cc79c258848f
+  languageName: node
+  linkType: hard
+
 "jsx-ast-utils@npm:^2.4.1 || ^3.0.0, jsx-ast-utils@npm:^3.3.5":
   version: 3.3.5
   resolution: "jsx-ast-utils@npm:3.3.5"
@@ -15219,6 +15280,7 @@ __metadata:
     "@babel/plugin-syntax-flow": "npm:^7.23.3"
     "@babel/plugin-transform-optional-chaining": "npm:^7.23.4"
     "@babel/plugin-transform-react-jsx": "npm:^7.23.4"
+    "@ianvs/prettier-plugin-sort-imports": "npm:^4.1.1"
     "@jest/globals": "npm:^29.7.0"
     "@next/bundle-analyzer": "npm:^14.0.3"
     "@opentelemetry/api": "npm:1.7.0"
@@ -15271,6 +15333,7 @@ __metadata:
     all-contributors-cli: "npm:^6.26.1"
     autoprefixer: "npm:^10.4.16"
     class-variance-authority: "npm:^0.7.0"
+    confluence.js: "npm:^1.7.2"
     cross-env: "npm:^7.0.3"
     eslint: "npm:8.54.0"
     eslint-config-next: "npm:14.0.3"
@@ -15876,6 +15939,13 @@ __metadata:
   bin:
     nypm: dist/cli.mjs
   checksum: b76901cd1ac48b0c9e1e0728f81d5a2a8ac062dfa419810fb778f162f08e73f2495c1593a42a34adb95043239d00e5df77c8c1b0e34436ba3e3977431321199a
+  languageName: node
+  linkType: hard
+
+"oauth@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "oauth@npm:0.10.0"
+  checksum: 76f3e186cfd76cb33e5d5d442861c86680a5c3b71b2db1b854212087532c265a69de1a2ab9db683e6c6df733e17cfc67476527b81b224a19c1917de2bc3f75fa
   languageName: node
   linkType: hard
 
@@ -17198,7 +17268,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:^1.0.0":
+"proxy-from-env@npm:^1.0.0, proxy-from-env@npm:^1.1.0":
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b

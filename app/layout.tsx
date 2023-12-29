@@ -1,9 +1,15 @@
-import "styles/tailwind.css"
+import React from 'react';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import 'styles/tailwind.css';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>{children}</body>
     </html>
-  )
+  );
 }
