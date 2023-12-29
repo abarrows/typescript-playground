@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach Chrome",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "url": "http://localhost:3000"
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "yarn dev",
+      "serverReadyAction": {
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**",
+        ".next/**",
+        "<node_internals>/**",
+        "node_modules/**/**",
+        "node_modules/**/**/**",
+        "**/.next/**"
+      ]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "yarn storybook:dev",
+      "name": "Launch Chrome",
+      "url": "http://localhost:4444",
+      "webRoot": "${workspaceRoot}/"
+    }
+    // {
+    //   "name": "Next.js: debug production build",
+    //   "type": "node-terminal",
+    //   "request": "launch",
+    //   "command": "docker compose up --build ui",
+    //   "serverReadyAction": {
+    //     "pattern": "started server on .+, url: (https?://.+)",
+    //     "uriFormat": "%s",
+    //     "action": "debugWithChrome"
+    //   }
+    // },
+    // {
+    //   "name": "Debug: Jest Single Unit Test",
+    //   "type": "node",
+    //   "request": "launch",
+    //   "env": { "CI": "true" },
+    //   "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
+    //   "args": ["${fileBasenameNoExtension}", "--runInBand", "--no-cache"],
+    //   "cwd": "${workspaceRoot}",
+    //   "internalConsoleOptions": "neverOpen"
+    // }
+  ]
+}
