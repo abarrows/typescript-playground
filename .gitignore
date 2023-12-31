@@ -1,12 +1,20 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/.npm-only-allow
 node_modules
 .pnp
 .pnp.js
 
-# testing
-coverage
+#History directory
+./history/
+*.history
+.setup_done
+
+# local env files
+.env
+.env.local
+.env.*.local
 
 # next.js
 .next/
@@ -23,13 +31,53 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Automated Testing
+/coverage/integration
 /test-results/
-/playwright-report/
+/playwright/storage-states/
 /playwright/.cache/
+/playwright-report/
 
-/.npm-only-allow
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# SCSS/Sass
+# https://github.com/github/gitignore/blob/master/Sass.gitignore
+
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map
+
+# VS Code files for those working on multiple tools
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# VSCode
+# https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore
+
+# by default all files in this directory should be ignored in Git
+*devcontainer.env
+
+# Yarn Package Management
+.yarn-integrity
+yarn-error.log
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# project specific files
+/data/training

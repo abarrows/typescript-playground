@@ -11,11 +11,12 @@ export const env = createEnv({
     CONFLUENCE_USERNAME: z.string().optional(),
     CONFLUENCE_API_TOKEN: z.string().optional(),
   },
-  client: {},
+  client: { NEXT_PUBLIC_BASE_URL: z.string().optional() },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     CONFLUENCE_DOMAIN: process.env.CONFLUENCE_DOMAIN,
     CONFLUENCE_API_TOKEN: process.env.CONFLUENCE_API_TOKEN,
     CONFLUENCE_USERNAME: process.env.CONFLUENCE_USERNAME,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   },
 });

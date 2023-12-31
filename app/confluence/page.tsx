@@ -1,12 +1,15 @@
 import { Button } from 'components/Button/Button';
+import { SearchPageResponseSearchResult } from 'confluence.js/out/api/models';
 import consola from 'consola';
-import { env } from 'env.mjs';
 import { LP_GRID_ITEMS } from 'lp-items';
 import { Metadata } from 'next';
-import { NextRequest, NextResponse } from 'next/server';
+import Link from 'next/link';
+
+import serviceRouteHandler from '@/components/serviceRouteHandler';
+import saveArticles from '@/utilities/saveArticles';
 
 export const metadata: Metadata = {
-  title: 'Next.js Enterprise Boilerplate',
+  title: 'Confluence Article List',
   twitter: {
     card: 'summary_large_image',
   },
@@ -22,26 +25,46 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Web() {
-  const getHealth: NextRequest = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/health`,
-  );
-  const dataHealth: NextResponse = getHealth;
-  consola.info('Health status: ', dataHealth.status);
+interface ConfluenceArticle {
+  title: string;
+  url: string;
+  excerpt: string;
+}
+
+export default async function Page() {
+  const getConfluenceResults: SearchPageResponseSearchResult | void =
+    // await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/confluence`);
+    serviceRouteHandler('api/confluence');
+  const dataConfluenceResults: SearchPageResponseSearchResult | void =
+    await getConfluenceResults;
+  consola.log(dataConfluenceResults);
+
+  // Save the Confluence Articles to files
+  saveArticles('confluence', dataConfluenceResults.results);
+  consola.log(dataConfluenceResults);
+
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>
         <div className='mx-auto grid max-w-screen-xl px-4 py-8 text-center lg:py-16'>
           <div className='mx-auto place-self-center'>
             <h1 className='mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white'>
-              Next.js Enterprise Boilerplate
+              Confluence Articles List
             </h1>
-            <p className='mb-6 max-w-2xl font-light text-gray-500 md:text-lg lg:mb-8 lg:text-xl dark:text-gray-400'>
-              Jumpstart your enterprise project with our feature-packed,
-              high-performance Next.js boilerplate! Experience rapid UI
-              development, AI-powered code reviews, and an extensive suite of
-              tools for a smooth and enjoyable development process.
-            </p>
+            <ul>
+              {dataConfluenceResults.results.map(
+                (article: ConfluenceArticle) => (
+                  <li key={article.url}>
+                    <h3>
+                      <Link href={article.url} target='_blank' rel='noreferrer'>
+                        {article.title}
+                      </Link>
+                    </h3>
+                    <p>{article.excerpt}</p>
+                  </li>
+                ),
+              )}
+            </ul>
             <Button
               href='https://github.com/Blazity/next-enterprise'
               className='mr-3'
