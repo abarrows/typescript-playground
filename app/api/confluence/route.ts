@@ -19,7 +19,7 @@ const client: ConfluenceClient = new ConfluenceClient({
   },
 });
 export async function GET(): Promise<void> {
-  consoleLogger('Confluence Domain', process.env.CONFLUENCE_DOMAIN);
+  consoleLogger('Platform Domain', process.env.CONFLUENCE_DOMAIN);
 
   interface ConfluenceApiResponse extends Omit<Response, 'data'> {
     data: () => {

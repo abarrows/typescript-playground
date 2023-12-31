@@ -12,7 +12,7 @@ export type Platform = 'confluence' | 'jira' | 'github' | 'google';
 
 type ConfluenceArticles = {
   platform: Platform;
-  items: ConfluenceArticle[];
+  items: ConfluenceArticle[] | JiraIssue[];
 };
 
 type ConfluenceArticle = {
@@ -20,6 +20,15 @@ type ConfluenceArticle = {
   url: string;
   excerpt: string;
   // body: string;
+};
+
+type JiraIssue = {
+  key: string;
+  id: string;
+  fields: {
+    summary: string;
+    description: object;
+  };
 };
 
 export default async function saveArticles(
