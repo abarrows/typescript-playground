@@ -7731,7 +7731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.2":
+"axios@npm:^1.6.1, axios@npm:^1.6.2":
   version: 1.6.3
   resolution: "axios@npm:1.6.3"
   dependencies:
@@ -13874,6 +13874,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jira.js@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "jira.js@npm:3.0.1"
+  dependencies:
+    axios: "npm:^1.6.1"
+    form-data: "npm:^4.0.0"
+    tslib: "npm:^2.6.2"
+  checksum: dc7070945ea795a6614e213ea8109c96c09466ec043ece3ff21579cbed44e4e68e8e98fc9c8c350bfdf714c7fa87f251edbb8a13f688de43a58b6bf36951c5b2
+  languageName: node
+  linkType: hard
+
 "jiti@npm:^1.19.1, jiti@npm:^1.20.0":
   version: 1.21.0
   resolution: "jiti@npm:1.21.0"
@@ -15353,6 +15364,7 @@ __metadata:
     gzip-size: "npm:6"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
+    jira.js: "npm:^3.0.1"
     lodash: "npm:^4.17.21"
     mkdirp: "npm:^3.0.1"
     next: "npm:^14.0.3"
