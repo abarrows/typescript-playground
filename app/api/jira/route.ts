@@ -2,7 +2,7 @@ import consola from 'consola';
 import { env } from 'env.mjs';
 import { Version3Client } from 'jira.js';
 
-import consoleLogger from '@/utilities/consoleLogger';
+import { consoleLogger } from '@/utilities/consoleLogger';
 
 type BasicAuthentication = {
   email: string;

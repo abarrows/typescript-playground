@@ -10,36 +10,28 @@ export type Platform = 'confluence' | 'jira' | 'github' | 'google';
 // Now create a type or an interface which is an object containing a platform
 // value and another key called items which is an array of ConfluenceArticles
 
-type ConfluenceArticles = {
+type TrainingItems = {
   platform: Platform;
-  items: ConfluenceArticle[] | JiraIssue[];
+  items: TrainingItem[];
 };
 
-type ConfluenceArticle = {
+export interface TrainingItem {
   title: string;
   url: string;
-  excerpt: string;
-  // body: string;
-};
-
-type JiraIssue = {
-  key: string;
+  body: string;
   id: string;
-  fields: {
-    summary: string;
-    description: object;
-  };
-};
+  key: string;
+}
 
-export default async function saveArticles(
+export default async function saveTrainingData(
   platform: Platform,
-  items: ConfluenceArticles['items'],
+  items: TrainingItems['items'],
 ) {
-  items.map((item, index: number) => {
-    const filename = `${platform}-article-${index}-current.json`;
+  items.map((item: TrainingItem, index: number) => {
+    const filename = `${platform}-${item.key}-${item.id}.json`;
     const filepath = path.join(
       process.cwd(),
-      'data/training/confluence/',
+      `data/training/${platform}/`,
       filename,
     );
 
@@ -47,7 +39,7 @@ export default async function saveArticles(
       // Write the data to a file in the 'training-data' directory
       fs.writeFileSync(filepath, JSON.stringify(item, null, 2), 'utf-8');
     } catch (error) {
-      consola.error(new Error('Failed to fetch from Confluence API:'), error);
+      consola.error(new Error(`Failed to fetch from ${platform} API:`), error);
     }
   });
 }

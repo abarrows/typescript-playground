@@ -6,7 +6,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import saveArticles from '@/utilities/saveArticles';
+import jiraDescriptionToMarkdown from '@/utilities/jiraDescriptionToMarkdown';
+import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
 
 export const metadata: Metadata = {
   title: 'Jira Issues List',
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
 interface JiraIssue {
   title: string;
   url: string;
+  body: string;
+  id: string;
+  key: string;
   excerpt: string;
 }
 
@@ -36,14 +40,40 @@ const generateIssueUrl = (issueKey: JiraIssue.key) => {
 };
 
 export default async function Page() {
-  const getJiraResults: unknown | void =
-    // await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/jira`);
-    serviceRouteHandler('api/jira');
+  const getJiraResults: unknown | void = serviceRouteHandler('api/jira');
   const dataJiraResults: unknown | void = await getJiraResults;
   consola.log(dataJiraResults);
 
+  const normalizedJiraIssues = dataJiraResults.issues.map(
+    (issue: JiraIssue): TrainingItem => {
+      // Push each issue with only the selected fields into the
+      // normalizedJiraResults array.
+
+      // Use the function
+      const markdownDescription = issue.fields.description
+        ? jiraDescriptionToMarkdown(issue.fields.description)
+        : '';
+      return {
+        id: issue.id,
+        key: issue.key,
+        url: generateIssueUrl(issue.key),
+        title: issue.fields.summary,
+        body: markdownDescription,
+        excerpt: issue.fields.summary,
+        labels: issue.fields.labels,
+      };
+    },
+  );
+  consola.log(normalizedJiraIssues);
+  // Iterate through dataJiraResults and for each issue, use the following field
+  // values to create a new object:
+  // issue.id
+  // issue.key
+  // issue.fields.summary
+  // issue.fields.description
+
   // Save the Jira Articles to files
-  saveArticles('jira', dataJiraResults.issues);
+  saveTrainingData('jira', normalizedJiraIssues);
 
   return (
     <>
@@ -54,7 +84,7 @@ export default async function Page() {
               Jira Articles List
             </h1>
             <ul>
-              {dataJiraResults.issues.map((issue: JiraIssue) => (
+              {normalizedJiraIssues.map((issue: TrainingItem) => (
                 <li key={issue.id}>
                   <h3>
                     <Link
@@ -62,10 +92,13 @@ export default async function Page() {
                       target='_blank'
                       rel='noreferrer'
                     >
-                      {issue.fields.summary}
+                      {issue.title}
                     </Link>
                   </h3>
-                  <p>{JSON.stringify(issue.fields.description)}</p>
+                  {issue.labels.map((label: string) => (
+                    <h6 className='label'>{label}</h6>
+                  ))}
+                  <p>{JSON.stringify(issue.body)}</p>
                 </li>
               ))}
             </ul>

@@ -2,15 +2,17 @@ import { ConfluenceClient } from 'confluence.js';
 import consola from 'consola';
 import { env } from 'env.mjs';
 
-import consoleLogger from '@/utilities/consoleLogger';
+import { consoleLogger } from '@/utilities/consoleLogger';
 
 type BasicAuthentication = {
   email: string;
   apiToken: string;
 };
+
+const platform: string = 'confluence';
+
 const client: ConfluenceClient = new ConfluenceClient({
   host: `https://${process.env.CONFLUENCE_DOMAIN}.atlassian.net`,
-  // apiPrefix: '/api',
   authentication: {
     basic: {
       email: env.CONFLUENCE_USERNAME,
@@ -27,30 +29,18 @@ export async function GET(): Promise<void> {
     };
   }
 
-  // interface ConfluenceArticle {
-  //   title: string;
-  //   url: string;
-  //   excerpt: string;
-  // }
-
-  // async function getSearchResults() {
-  //   const labelToSearch = await client.search.search({
-  //     cql: 'label="acb-review"',
-  //     limit: 5,
-  //   });
-
-  //   return labelToSearch;
-
-  //   // const searchResults = await client.search.search({
-  // }
   try {
+    // Call the ConfluenceAPI and search using cql with the label="acb-review"
+    // and expand to get the labels and the body of the article
     const res: ConfluenceApiResponse = await client.search.search({
       cql: 'label="acb-review"',
+      expand: ['body'],
       limit: 5,
     });
-    const data = await res;
+
+    const data: ConfluenceApiResponse | void = await res;
     return Response.json(data);
   } catch (error) {
-    consola.error(new Error('Failed to fetch from Confluence API:'), error);
+    consola.error(new Error(`Failed to fetch from ${platform} API:`), error);
   }
 }

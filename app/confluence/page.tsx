@@ -6,7 +6,17 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import saveArticles from '@/utilities/saveArticles';
+import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
+
+interface ConfluenceArticle {
+  title: string;
+  url: string;
+  body: string;
+  id: string;
+  key: string;
+  excerpt: string;
+  labels: string[] | '';
+}
 
 export const metadata: Metadata = {
   title: 'Confluence Article List',
@@ -25,12 +35,6 @@ export const metadata: Metadata = {
   },
 };
 
-interface ConfluenceArticle {
-  title: string;
-  url: string;
-  excerpt: string;
-}
-
 export default async function Page() {
   const getConfluenceResults: SearchPageResponseSearchResult | void =
     // await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/confluence`);
@@ -40,7 +44,7 @@ export default async function Page() {
   consola.log(dataConfluenceResults);
 
   // Save the Confluence Articles to files
-  saveArticles('confluence', dataConfluenceResults.results);
+  saveTrainingData('confluence', dataConfluenceResults.results);
   consola.log(dataConfluenceResults);
 
   return (
@@ -52,18 +56,29 @@ export default async function Page() {
               Confluence Articles List
             </h1>
             <ul>
-              {dataConfluenceResults.results.map(
-                (article: ConfluenceArticle) => (
-                  <li key={article.url}>
-                    <h3>
-                      <Link href={article.url} target='_blank' rel='noreferrer'>
-                        {article.title}
-                      </Link>
-                    </h3>
-                    <p>{article.excerpt}</p>
-                  </li>
-                ),
-              )}
+              {dataConfluenceResults.results.map((article: TrainingItem) => (
+                <li key={article.url}>
+                  <h3>
+                    <Link href={article.url} target='_blank' rel='noreferrer'>
+                      {article.title}
+                    </Link>
+                  </h3>
+                  {article.labels &&
+                    article.labels.map((label: string, idx: number) => (
+                      <h6 className='label' index={idx}>
+                        {label}
+                      </h6>
+                    ))}
+                  <blockquote>{article.excerpt}</blockquote>
+                  {article.body && (
+                    <article>
+                      <div dangerouslySetInnerHTML={{ __html: article.body }}>
+                        {article.body}
+                      </div>
+                    </article>
+                  )}
+                </li>
+              ))}
             </ul>
             <Button
               href='https://github.com/Blazity/next-enterprise'

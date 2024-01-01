@@ -153,5 +153,3 @@ export const seoLogger = (
       .error(...customHeader, sanitizedMessage(safeMessage), ...processedArgs);
   }
 };
-
-export default consoleLogger;
