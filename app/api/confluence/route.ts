@@ -1,8 +1,7 @@
 import { ConfluenceClient } from 'confluence.js';
+import { GetContentById, SearchByCQL } from 'confluence.js/out/api/parameters';
 import consola from 'consola';
-import { env } from 'env.mjs';
-
-import { consoleLogger } from '@/utilities/consoleLogger';
+import { NextResponse } from 'next/server';
 
 type BasicAuthentication = {
   email: string;
@@ -12,34 +11,51 @@ type BasicAuthentication = {
 const platform: string = 'confluence';
 
 const client: ConfluenceClient = new ConfluenceClient({
-  host: `https://${process.env.CONFLUENCE_DOMAIN}.atlassian.net`,
+  host: `${process.env.CONFLUENCE_DOMAIN}`,
   authentication: {
     basic: {
-      email: env.CONFLUENCE_USERNAME,
-      apiToken: env.CONFLUENCE_API_TOKEN,
+      email: process.env.CONFLUENCE_USERNAME,
+      apiToken: process.env.CONFLUENCE_API_TOKEN,
     } as BasicAuthentication,
   },
 });
 export async function GET(): Promise<void> {
-  consoleLogger('Platform Domain', process.env.CONFLUENCE_DOMAIN);
-
-  interface ConfluenceApiResponse extends Omit<Response, 'data'> {
-    data: () => {
-      message: string;
-    };
-  }
+  consola.info('Platform Domain', process.env.CONFLUENCE_DOMAIN);
 
   try {
     // Call the ConfluenceAPI and search using cql with the label="acb-review"
     // and expand to get the labels and the body of the article
-    const res: ConfluenceApiResponse = await client.search.search({
-      cql: 'label="acb-review"',
-      expand: ['body'],
-      limit: 5,
+    const res: SearchByCQL = await client.search.searchByCQL({
+      cql: `${process.env.CONFLUENCE_API_QUERY}`,
+      limit: 2,
+      expand: ['body.view', 'metadata.labels'],
     });
+    const items = res.results;
+    const populatedItems = [];
+    // Iterate through results and normalize into the training data format.
+    const normalizedItems: GetContentById = async (items) => {
+      for (const item of items) {
+        const itemContents = await client.content.getContentById({
+          id: item.content.id,
+          expand: ['body.view', 'metadata.labels'],
+        });
+        consola.info('Article: ', item.content.title);
+        const populatedItem = itemContents && {
+          id: item.content.id,
+          key: item.resultGlobalContainer.displayUrl,
+          url: `${process.env.CONFLUENCE_DOMAIN}${item.url}`,
+          title: item.title,
+          excerpt: item.excerpt,
+          body: itemContents.body.view.value,
+          labels: itemContents.metadata.labels.results,
+        };
+        populatedItems.push(populatedItem);
+      }
+      return populatedItems;
+    };
+    await normalizedItems(items);
 
-    const data: ConfluenceApiResponse | void = await res;
-    return Response.json(data);
+    return NextResponse.json({ populatedItems });
   } catch (error) {
     consola.error(new Error(`Failed to fetch from ${platform} API:`), error);
   }

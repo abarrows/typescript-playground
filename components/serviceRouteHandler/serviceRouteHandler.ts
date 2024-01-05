@@ -27,17 +27,21 @@ const serviceRouteHandler = async (path: string, query: string | void) => {
       next: { revalidate: 0 },
     });
 
-    if (!response.ok) {
-      consola.error(new Error(`Server Error! status: ${response.status}`));
+    const returnedResponse = response;
+
+    if (!returnedResponse.ok) {
+      consola.error(
+        new Error(`Server Error! status: ${returnedResponse.status}`),
+      );
       return null;
     }
 
-    if (response?.status && response?.status === 204) {
+    if (returnedResponse?.status && returnedResponse?.status === 204) {
       consola.error(new Error('No content found'));
       return null;
     }
 
-    const data = await response.json();
+    const data = await returnedResponse.json();
     return data;
   } catch (error) {
     consola.error('Error fetching data: ', error);

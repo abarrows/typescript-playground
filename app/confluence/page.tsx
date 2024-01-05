@@ -1,6 +1,4 @@
 import { Button } from 'components/Button/Button';
-import { SearchPageResponseSearchResult } from 'confluence.js/out/api/models';
-import consola from 'consola';
 import { LP_GRID_ITEMS } from 'lp-items';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -35,50 +33,47 @@ export const metadata: Metadata = {
   },
 };
 
+// async function populateArticleBodyAndLabels(
+//   item: TrainingItem,
+//   itemContent: Content,
+// ) {
+//   item.body = itemContent.content.body.view.value;
+//   item.labels = itemContent.metadata.labels.results;
+// }
+
 export default async function Page() {
-  const getConfluenceResults: SearchPageResponseSearchResult | void =
-    // await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/confluence`);
-    serviceRouteHandler('api/confluence');
-  const dataConfluenceResults: SearchPageResponseSearchResult | void =
-    await getConfluenceResults;
-  consola.log(dataConfluenceResults);
-
-  // Save the Confluence Articles to files
-  saveTrainingData('confluence', dataConfluenceResults.results);
-  consola.log(dataConfluenceResults);
-
+  // Initial request to confluence API using credentials to search using jql.
+  const getItems = await serviceRouteHandler('api/confluence');
+  const dataItems = getItems.populatedItems;
+  saveTrainingData('confluence', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>
-        <div className='mx-auto grid max-w-screen-xl px-4 py-8 text-center lg:py-16'>
+        <div className='container mx-auto'>
           <div className='mx-auto place-self-center'>
             <h1 className='mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white'>
               Confluence Articles List
             </h1>
             <ul>
-              {dataConfluenceResults.results.map((article: TrainingItem) => (
-                <li key={article.url}>
-                  <h3>
-                    <Link href={article.url} target='_blank' rel='noreferrer'>
-                      {article.title}
-                    </Link>
-                  </h3>
-                  {article.labels &&
-                    article.labels.map((label: string, idx: number) => (
-                      <h6 className='label' index={idx}>
-                        {label}
-                      </h6>
-                    ))}
-                  <blockquote>{article.excerpt}</blockquote>
-                  {article.body && (
-                    <article>
-                      <div dangerouslySetInnerHTML={{ __html: article.body }}>
-                        {article.body}
-                      </div>
-                    </article>
-                  )}
-                </li>
-              ))}
+              {dataItems &&
+                dataItems.map((article: TrainingItem, index: number) => (
+                  <li key={article.url}>
+                    <h6>{index}</h6>
+                    <h3>
+                      <Link href={article.url} target='_blank' rel='noreferrer'>
+                        {article.title}
+                      </Link>
+                    </h3>
+                    {article.labels &&
+                      article.labels.map((label: string, idx: number) => (
+                        <h6 className='label' index={idx}>
+                          {label.name}
+                        </h6>
+                      ))}
+                    <blockquote>{article.excerpt}</blockquote>
+                    {/* {article.body && <Article>{article.body}</Article>} */}
+                  </li>
+                ))}
             </ul>
             <Button
               href='https://github.com/Blazity/next-enterprise'

@@ -1,6 +1,5 @@
 import { Button } from 'components/Button/Button';
 import consola from 'consola';
-import { env } from 'env.mjs';
 import { LP_GRID_ITEMS } from 'lp-items';
 import { Metadata } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function Web() {
   const getHealth: NextRequest = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/health`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/health`,
   );
   const dataHealth: NextResponse = getHealth;
   consola.info('Health status: ', dataHealth.status);

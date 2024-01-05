@@ -18,9 +18,11 @@ type TrainingItems = {
 export interface TrainingItem {
   title: string;
   url: string;
-  body: string;
+  body: string | null;
   id: string;
   key: string;
+  excerpt: string;
+  labels: string[] | null;
 }
 
 export default async function saveTrainingData(
@@ -28,7 +30,9 @@ export default async function saveTrainingData(
   items: TrainingItems['items'],
 ) {
   items.map((item: TrainingItem, index: number) => {
-    const filename = `${platform}-${item.key}-${item.id}.json`;
+    const filename = `${platform}-${item.key.replaceAll('/spaces/', '')}-${
+      item.id
+    }.json`;
     const filepath = path.join(
       process.cwd(),
       `data/training/${platform}/`,

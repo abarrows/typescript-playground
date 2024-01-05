@@ -1,6 +1,5 @@
 import { Button } from 'components/Button/Button';
 import consola from 'consola';
-import { env } from 'env.mjs';
 import { LP_GRID_ITEMS } from 'lp-items';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -35,10 +34,6 @@ interface JiraIssue {
   excerpt: string;
 }
 
-const generateIssueUrl = (issueKey: JiraIssue.key) => {
-  return `https://${env.JIRA_DOMAIN}.atlassian.net/browse/${issueKey}`;
-};
-
 export default async function Page() {
   const getJiraResults: unknown | void = serviceRouteHandler('api/jira');
   const dataJiraResults: unknown | void = await getJiraResults;
@@ -56,7 +51,7 @@ export default async function Page() {
       return {
         id: issue.id,
         key: issue.key,
-        url: generateIssueUrl(issue.key),
+        url: `${process.env.JIRA_DOMAIN}/browse/${issue.key}`,
         title: issue.fields.summary,
         body: markdownDescription,
         excerpt: issue.fields.summary,
@@ -88,7 +83,7 @@ export default async function Page() {
                 <li key={issue.id}>
                   <h3>
                     <Link
-                      href={generateIssueUrl(issue.key)}
+                      href={`${process.env.JIRA_DOMAIN}/browse/${issue.key}`}
                       target='_blank'
                       rel='noreferrer'
                     >
@@ -96,7 +91,9 @@ export default async function Page() {
                     </Link>
                   </h3>
                   {issue.labels.map((label: string) => (
-                    <h6 className='label'>{label}</h6>
+                    <h6 className='label' key={label}>
+                      {label}
+                    </h6>
                   ))}
                   <p>{JSON.stringify(issue.body)}</p>
                 </li>
