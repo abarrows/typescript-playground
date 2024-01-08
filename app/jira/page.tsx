@@ -1,4 +1,6 @@
 import consola from 'consola';
+import { Search } from 'jira.js/out/version2/parameters';
+import { Issue } from 'jira.js/out/version3/models';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -34,12 +36,12 @@ interface JiraIssue {
 }
 
 export default async function Page() {
-  const getJiraResults: unknown | void = serviceRouteHandler('api/jira');
+  const getJiraResults: Search | void = serviceRouteHandler('api/jira');
   const dataJiraResults: unknown | void = await getJiraResults;
   consola.log(dataJiraResults);
 
   const normalizedJiraIssues = dataJiraResults.issues.map(
-    (issue: JiraIssue): TrainingItem => {
+    (issue: Issue): TrainingItem => {
       // Push each issue with only the selected fields into the
       // normalizedJiraResults array.
 
@@ -73,32 +75,54 @@ export default async function Page() {
     <>
       <section className='bg-white dark:bg-gray-900'>
         <div className='container mx-auto'>
-          <div className='mx-auto place-self-center'>
+          <div className='mx-auto place-self-start'>
             <h1 className='mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white'>
-              Confluence Articles List
+              Jira Articles List
             </h1>
             <div className='overflow-x-auto'>
               <table className='w-full whitespace-nowrap'>
                 <thead>
                   <tr className='h-16 w-full text-sm leading-none text-gray-600'>
-                    <th className='font-normal text-left pl-4'>Index</th>
-                    <th className='font-normal text-left pl-12'>ID</th>
-                    <th className='font-normal text-left pl-12'>Url</th>
-                    <th className='font-normal text-left pl-12'>Title</th>
-                    <th className='font-normal text-left pl-12'>
+                    <th className='font-normal text-left pl-1'>Index</th>
+                    <th className='font-normal text-left pl-1'>ID</th>
+                    <th className='font-normal text-left pl-1'>Key</th>
+                    <th className='font-normal text-left pl-1'>
+                      Title and Excerpt
+                    </th>
+                    <th className='font-normal text-left pl-1'>Url</th>
+                    <th className='font-normal text-left pl-1'>
                       Original Labels
                     </th>
-                    <th className='font-normal text-left pl-12'>AI Labels</th>
+                    <th className='font-normal text-left pl-1'>
+                      Proficiencies
+                    </th>
+                    <th className='font-normal text-left pl-1'>Tools</th>
+                    <th className='font-normal text-left pl-1'>
+                      Advanced Skills
+                    </th>
+                    <th className='font-normal text-left pl-12'>Excerpt</th>
                   </tr>
                 </thead>
                 <tbody className='w-full'>
                   {normalizedJiraIssues &&
                     normalizedJiraIssues.map(
                       (item: TrainingItem, index: number) => (
-                        <tr className='h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-y border-gray-100'>
-                          <td className='pl-4 cursor-pointer'>{index}</td>
-                          <td className='pl-12'>{item.id}</td>
-                          <td className='pl-12'>
+                        <tr
+                          className='h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-y border-gray-100'
+                          key={`${index}-${item.id}-${item.key}`}
+                        >
+                          <td className='pl-1 cursor-pointer'>{index}</td>
+                          <td className='pl-1'>{item.id}</td>
+                          <td className='pl-1'>{item.key}</td>
+                          <td className='pl-1'>
+                            {item.title}
+                            <br />
+                            <br />
+                            {item.body && (
+                              <Article>{JSON.stringify(item.body)}</Article>
+                            )}
+                          </td>
+                          <td className='pl-1'>
                             <Link
                               href={item.url}
                               target='_blank'
@@ -107,18 +131,21 @@ export default async function Page() {
                               {item.url}
                             </Link>
                           </td>
-                          <td className='pl-12'>{item.title}</td>
-                          <td className='pl-12'>
-                            {item.labels &&
-                              item.labels.map((label: string, idx: number) => (
-                                <p key={idx}>{label.name}</p>
-                              ))}
+                          <td className='pl-1'>
+                            {item.labels.map((label: string) => (
+                              <h6 className='label' key={label}>
+                                {label}
+                              </h6>
+                            ))}
                           </td>
-                          <td className='pl-12'>
+                          <th className='font-normal text-left pl-1'></th>
+                          <th className='font-normal text-left pl-1'></th>
+                          <th className='font-normal text-left pl-1'></th>
+                          {/* <td className='pl-7'>
                             {item.body && (
                               <Article>{JSON.stringify(item.body)}</Article>
                             )}
-                          </td>
+                          </td> */}
                         </tr>
                       ),
                     )}

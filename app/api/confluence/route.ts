@@ -27,7 +27,7 @@ export async function GET(): Promise<void> {
     // and expand to get the labels and the body of the article
     const res: SearchByCQL = await client.search.searchByCQL({
       cql: `${process.env.CONFLUENCE_API_QUERY}`,
-      limit: 2,
+      limit: 100,
       expand: ['body.view', 'metadata.labels'],
     });
     const items = res.results;
