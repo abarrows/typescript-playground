@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import jiraDescriptionToMarkdown from '@/utilities/jiraDescriptionToMarkdown';
+import bodyToMarkdown from '@/utilities/bodyToMarkdown';
 import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default async function Page() {
 
       // Use the function
       const markdownDescription = issue.fields.description
-        ? jiraDescriptionToMarkdown(issue.fields.description)
+        ? bodyToMarkdown(issue.fields.description)
         : '';
       return {
         id: issue.id,
@@ -138,9 +138,9 @@ export default async function Page() {
                               </h6>
                             ))}
                           </td>
-                          <th className='font-normal text-left pl-1'></th>
-                          <th className='font-normal text-left pl-1'></th>
-                          <th className='font-normal text-left pl-1'></th>
+                          <td className='font-normal text-left pl-1'></td>
+                          <td className='font-normal text-left pl-1'></td>
+                          <td className='font-normal text-left pl-1'></td>
                           {/* <td className='pl-7'>
                             {item.body && (
                               <Article>{JSON.stringify(item.body)}</Article>

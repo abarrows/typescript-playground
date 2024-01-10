@@ -27,7 +27,7 @@ export async function GET(): Promise<void> {
     // and expand to get the labels and the body of the article
     const res: SearchByCQL = await client.search.searchByCQL({
       cql: `${process.env.CONFLUENCE_API_QUERY}`,
-      limit: 100,
+      limit: 210,
       expand: ['body.view', 'metadata.labels'],
     });
     const items = res.results;
@@ -39,7 +39,13 @@ export async function GET(): Promise<void> {
           id: item.content.id,
           expand: ['body.view', 'metadata.labels'],
         });
-        consola.info('Article: ', item.content.title);
+        consola.info(
+          `Item: ${
+            item.content.title
+          } | Labels: ${itemContents.metadata.labels.results
+            .map((label: string) => label.name)
+            .join(', ')}`,
+        );
         const populatedItem = itemContents && {
           id: item.content.id,
           key: item.resultGlobalContainer.displayUrl,
@@ -49,8 +55,21 @@ export async function GET(): Promise<void> {
           body: itemContents.body.view.value,
           labels: itemContents.metadata.labels.results,
         };
-        populatedItems.push(populatedItem);
+        if (item.content.id) populatedItems.push(populatedItem);
       }
+
+      // Check the populatedItems array to see if there are any duplicated
+      // items and remove any after the first one.
+
+      const seen = new Set();
+      const filteredItems = populatedItems.filter((item) => {
+        const duplicate = seen.has(item.id);
+        seen.add(item.id);
+        return !duplicate;
+      });
+      populatedItems.length = 0;
+      populatedItems.push(...filteredItems);
+
       return populatedItems;
     };
     await normalizedItems(items);

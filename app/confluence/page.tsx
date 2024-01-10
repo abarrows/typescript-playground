@@ -60,7 +60,7 @@ export default async function Page() {
                     <th className='font-normal text-left pl-1'>Index</th>
                     <th className='font-normal text-left pl-1'>ID</th>
                     <th className='font-normal text-left pl-1'>Key</th>
-                    <th className='font-normal text-left pl-1'>
+                    <th className='font-normal text-left pl-4'>
                       Title and Excerpt
                     </th>
                     <th className='font-normal text-left pl-1'>Url</th>
@@ -74,7 +74,7 @@ export default async function Page() {
                     <th className='font-normal text-left pl-1'>
                       Advanced Skills
                     </th>
-                    <th className='font-normal text-left pl-12'>Excerpt</th>
+                    <th className='font-normal text-left pl-12'>Body</th>
                   </tr>
                 </thead>
                 <tbody className='w-full'>
@@ -108,11 +108,15 @@ export default async function Page() {
                               <p key={idx}>{label.name}</p>
                             ))}
                         </td>
-                        <th className='font-normal text-left pl-1'></th>
-                        <th className='font-normal text-left pl-1'></th>
-                        <th className='font-normal text-left pl-1'></th>
-                        <td className='pl-12'>
-                          {/* {item.body && <Article>{item.body}</Article>} */}
+                        <td className='font-normal text-left pl-1'></td>
+                        <td className='font-normal text-left pl-1'></td>
+                        <td className='font-normal text-left pl-1'></td>
+                        <td className='pl-1'>
+                          {item.body && (
+                            <Article>
+                              {item.body.replace(/<(?!br\s*\/?)[^>]+>/gi, '')}
+                            </Article>
+                          )}
                         </td>
                       </tr>
                     ))}
