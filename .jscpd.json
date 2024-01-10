@@ -1,0 +1,13 @@
+{
+  "blame": true,
+  "gitignore": true,
+  "ignore": [
+    "**/coverage/**",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/design-system-package/**"
+  ],
+  "output": "coverage/code-quality/duplication/",
+  "reporters": ["html", "markdown", "badge", "console"],
+  "threshold": 15
+}

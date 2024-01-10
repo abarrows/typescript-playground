@@ -1,2 +1,44 @@
-.next
-node_modules
+.cache/
+.git/
+
+# GitHub Actions Workflows
+.github/
+
+# Helm
+deployments/**/templates/
+**/values.yaml
+docker-compose.yml
+node_modules/**
+.next/**
+build/
+coverage/**
+playwright-report/
+test-results/
+**.js.map
+**.bundle.js
+storybook-static/**
+src/helpers/utilities/tokens/_design_tokens.js
+wp-content/
+*Game/
+.prettierignore
+.stylelintignore
+.eslintignore
+*Service/
+*.Library/
+*.Tests/
+*.WebAPI/
+*.sln
+*.csproj
+*.lutconfig
+.editorconfig
+*.tsbuildinfo
+package-lock.json
+yarn.lock
+.vscode/
+.idea/
+deployments/
+**/vendor
+/tests/
+**/.test.
+# Project Specific Ignores
+src/design-system-package/dist/**

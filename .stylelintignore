@@ -1,0 +1,57 @@
+# Add any directories or files to ignore here
+# Ignore build output
+build/
+out/
+
+# Ignore Next.js cache
+.next/**
+
+# Ignore node_modules
+node_modules/**
+
+# Ignore coverage reports
+coverage/**
+test-results/
+playwright-report/
+
+# Ignore storybook build output
+storybook-static/**
+
+# Ignore TypeScript build output
+*.tsbuildinfo
+
+# Ignore package lock files
+package-lock.json
+yarn.lock
+
+# Ignore editor files
+.vscode/
+.idea/
+
+# Ignore git files
+.git/
+
+# Ignore deployment files
+deployments/
+
+# Ignore bundle files
+**.bundle.js
+
+# Ignore vendor files
+**/vendor
+
+# Ignore cache files
+.cache
+
+# Ignore test files
+**/__tests__/**
+**/*.test.*
+
+# Project Specific Ignores
+src/design-system-package/dist/**
+**/_design_tokens.js
+/public/images/**
+**/_custom.scss
+**/*.md
+**/*.js
+**/*_design-tokens.scss
