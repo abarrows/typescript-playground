@@ -3,10 +3,20 @@ import Link from 'next/link';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
+import { TrainingItem } from '@/utilities/saveTrainingData';
+
+interface LangChainItem {
+  title: string;
+  url: string;
+  body: string;
+  id: string;
+  key: string;
+  excerpt: string;
+  labels: string[] | '';
+}
 
 export const metadata: Metadata = {
-  title: 'Confluence Article List',
+  title: 'LangChain Training Data',
   twitter: {
     card: 'summary_large_image',
   },
@@ -31,17 +41,17 @@ export const metadata: Metadata = {
 // }
 
 export default async function Page() {
-  // Initial request to confluence API using credentials to search using jql.
-  const getItems = await serviceRouteHandler('api/confluence');
-  const dataItems = getItems.populatedItems;
-  saveTrainingData('confluence', dataItems);
+  // Initial request to LangChain API using credentials to search using jql.
+  const getItems = await serviceRouteHandler('api/langchain');
+  const dataItems = getItems;
+  // saveTrainingData('gpt-recommendations', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>
         <div className='container mx-auto'>
           <div className='mx-auto place-self-center'>
             <h1 className='mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white'>
-              Confluence Articles List
+              LangChain Articles List
             </h1>
             <div className='overflow-x-auto'>
               <table className='w-full whitespace-nowrap'>
@@ -92,12 +102,21 @@ export default async function Page() {
                             {item.url}
                           </Link>
                         </td>
-                        <td className='pl-1'>{item.labels}</td>
+                        <td className='pl-1'>
+                          {item.labels &&
+                            item.labels.map((label: string, idx: number) => (
+                              <p key={idx}>{label.name}</p>
+                            ))}
+                        </td>
                         <td className='font-normal text-left pl-1'></td>
                         <td className='font-normal text-left pl-1'></td>
                         <td className='font-normal text-left pl-1'></td>
                         <td className='pl-1'>
-                          {item.body && <Article>{item.body}</Article>}
+                          {item.body && (
+                            <Article>
+                              {item.body.replace(/<(?!br\s*\/?)[^>]+>/gi, '')}
+                            </Article>
+                          )}
                         </td>
                       </tr>
                     ))}

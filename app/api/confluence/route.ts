@@ -1,7 +1,14 @@
 import { ConfluenceClient } from 'confluence.js';
-import { GetContentById, SearchByCQL } from 'confluence.js/out/api/parameters';
+import { Content } from 'confluence.js/out/api';
+import {
+  Label,
+  SearchPageResponseSearchResult,
+  SearchResult,
+} from 'confluence.js/out/api/models';
 import consola from 'consola';
 import { NextResponse } from 'next/server';
+
+import { TrainingItem } from '@/utilities/saveTrainingData';
 
 type BasicAuthentication = {
   email: string;
@@ -25,35 +32,36 @@ export async function GET(): Promise<void> {
   try {
     // Call the ConfluenceAPI and search using cql with the label="acb-review"
     // and expand to get the labels and the body of the article
-    const res: SearchByCQL = await client.search.searchByCQL({
-      cql: `${process.env.CONFLUENCE_API_QUERY}`,
-      limit: 210,
-      expand: ['body.view', 'metadata.labels'],
-    });
-    const items = res.results;
-    const populatedItems = [];
+    const res: SearchPageResponseSearchResult = await client.search.searchByCQL(
+      {
+        cql: `${process.env.CONFLUENCE_API_QUERY}`,
+        limit: 210,
+        expand: ['body.view', 'metadata.labels'],
+      },
+    );
+    const items: SearchResult[] = res.results;
+    const populatedItems: TrainingItem[] = [];
     // Iterate through results and normalize into the training data format.
-    const normalizedItems: GetContentById = async (items) => {
+    const normalizedItems = async (items: SearchResult[]) => {
       for (const item of items) {
-        const itemContents = await client.content.getContentById({
+        const itemContents: Content = await client.content.getContentById({
           id: item.content.id,
           expand: ['body.view', 'metadata.labels'],
         });
-        consola.info(
-          `Item: ${
-            item.content.title
-          } | Labels: ${itemContents.metadata.labels.results
-            .map((label: string) => label.name)
-            .join(', ')}`,
-        );
+        consola.info(`Item: ${item.content.title}`);
         const populatedItem = itemContents && {
           id: item.content.id,
           key: item.resultGlobalContainer.displayUrl,
           url: `${process.env.CONFLUENCE_DOMAIN}${item.url}`,
           title: item.title,
-          excerpt: item.excerpt,
-          body: itemContents.body.view.value,
-          labels: itemContents.metadata.labels.results,
+          excerpt: item.excerpt.replace(/<(?!br\s*\/?)[^>]+>/gi, '') || '',
+          body: itemContents.body.view?.value?.replace(
+            /<(?!br\s*\/?)[^>]+>/gi,
+            '',
+          ),
+          labels: itemContents.metadata.labels.results
+            .map((label: Label) => label.name)
+            .join(', '),
         };
         if (item.content.id) populatedItems.push(populatedItem);
       }

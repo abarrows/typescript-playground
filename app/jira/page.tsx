@@ -26,15 +26,6 @@ export const metadata: Metadata = {
   },
 };
 
-interface JiraIssue {
-  title: string;
-  url: string;
-  body: string;
-  id: string;
-  key: string;
-  excerpt: string;
-}
-
 export default async function Page() {
   const getJiraResults: Search | void = serviceRouteHandler('api/jira');
   const dataJiraResults: unknown | void = await getJiraResults;
