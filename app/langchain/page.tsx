@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import { TrainingItem } from '@/utilities/saveTrainingData';
+import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
 
 interface LangChainItem {
   title: string;
@@ -44,7 +44,7 @@ export default async function Page() {
   // Initial request to LangChain API using credentials to search using jql.
   const getItems = await serviceRouteHandler('api/langchain');
   const dataItems = getItems;
-  // saveTrainingData('gpt-recommendations', dataItems);
+  saveTrainingData('gpt-recommendations', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>

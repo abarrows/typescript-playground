@@ -43,13 +43,15 @@ export async function GET(): Promise<void> {
     const populatedItems: TrainingItem[] = [];
     // Iterate through results and normalize into the training data format.
     const normalizedItems = async (items: SearchResult[]) => {
-      for (const item of items) {
+      // Add index to each item
+      for (const [index, item] of items.entries()) {
         const itemContents: Content = await client.content.getContentById({
           id: item.content.id,
           expand: ['body.view', 'metadata.labels'],
         });
         consola.info(`Item: ${item.content.title}`);
         const populatedItem = itemContents && {
+          index: index,
           id: item.content.id,
           key: item.resultGlobalContainer.displayUrl,
           url: `${process.env.CONFLUENCE_DOMAIN}${item.url}`,
