@@ -54,7 +54,7 @@ export async function GET(): Promise<void> {
           index: index,
           id: item.content.id,
           key: item.resultGlobalContainer.displayUrl,
-          url: `${process.env.CONFLUENCE_DOMAIN}${item.url}`,
+          url: `${process.env.CONFLUENCE_DOMAIN}/wiki/${item.url}`,
           title: item.title,
           excerpt: item.excerpt.replace(/<(?!br\s*\/?)[^>]+>/gi, '') || '',
           body: itemContents.body.view?.value?.replace(
