@@ -35,27 +35,22 @@
       "name": "Launch Chrome",
       "url": "http://localhost:4444",
       "webRoot": "${workspaceRoot}/"
-    }
-    // {
-    //   "name": "Next.js: debug production build",
-    //   "type": "node-terminal",
-    //   "request": "launch",
-    //   "command": "docker compose up --build ui",
-    //   "serverReadyAction": {
-    //     "pattern": "started server on .+, url: (https?://.+)",
-    //     "uriFormat": "%s",
-    //     "action": "debugWithChrome"
-    //   }
-    // },
-    // {
-    //   "name": "Debug: Jest Single Unit Test",
-    //   "type": "node",
-    //   "request": "launch",
-    //   "env": { "CI": "true" },
-    //   "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
-    //   "args": ["${fileBasenameNoExtension}", "--runInBand", "--no-cache"],
-    //   "cwd": "${workspaceRoot}",
-    //   "internalConsoleOptions": "neverOpen"
-    // }
+    },
+    // Debug prisma seed script
+    {
+      "name": "Debug prisma seed script",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "yarn prisma db seed",
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**",
+        ".next/**",
+        "<node_internals>/**",
+        "node_modules/**/**",
+        "node_modules/**/**/**",
+        "**/.next/**"
+      ]
+    },
   ]
 }

@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_URL")
+}
+
+model labels {
+  id              Int              @id
+  name            String           @unique
+  categoryId      Int
+  labelCategories label_categories @relation(fields: [categoryId], references: [id])
+  trainingItem    trainingItem[]   @relation("LabelToTrainingItem")
+}
+
+model trainingItem {
+  id        Int      @id
+  itemId    String   @unique
+  title     String
+  url       String
+  body      String?
+  key       String
+  excerpt   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  labels    labels[] @relation("LabelToTrainingItem")
+
+  @@map("training_items")
+}
+
+model label_categories {
+  id     Int      @id
+  name   String   @unique
+  labels labels[]
+}
