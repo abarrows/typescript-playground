@@ -1,0 +1,27 @@
+// Which platform the training item is being sourced from.
+export type Platform = 'confluence' | 'jira' | 'github' | 'google';
+
+// An array of training items, each with a title, URL, body, and ID.
+export type TrainingItems = {
+  platform: Platform;
+  items: TrainingItem[];
+};
+
+// A single training item which has been normalized from their more nuanced api
+// structure.  Each contain a title, URL, body, ID, key, excerpt, and labels.
+export interface TrainingItem {
+  title: string;
+  url: string;
+  body: string | null;
+  itemId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
+  key: string;
+  excerpt: string;
+  labels: string[] | null;
+}
+
+export type Label = {
+  name: string;
+};

@@ -7,8 +7,7 @@ import {
 } from 'confluence.js/out/api/models';
 import consola from 'consola';
 import { NextResponse } from 'next/server';
-
-import { TrainingItem } from '@/utilities/saveTrainingData';
+import { TrainingItem } from 'types/training-items';
 
 type BasicAuthentication = {
   email: string;
@@ -35,7 +34,7 @@ export async function GET(): Promise<void> {
     const res: SearchPageResponseSearchResult = await client.search.searchByCQL(
       {
         cql: `${process.env.CONFLUENCE_API_QUERY}`,
-        limit: 210,
+        limit: 2,
         expand: ['body.view', 'metadata.labels'],
       },
     );
@@ -51,8 +50,10 @@ export async function GET(): Promise<void> {
         });
         consola.info(`Item: ${item.content.title}`);
         const populatedItem = itemContents && {
-          index: index,
-          id: item.content.id,
+          itemId: item.content.id,
+          id: index,
+          updatedAt: new Date(),
+          createdAt: new Date(),
           key: item.resultGlobalContainer.displayUrl,
           url: `${process.env.CONFLUENCE_DOMAIN}/wiki/${item.url}`,
           title: item.title,

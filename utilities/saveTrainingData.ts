@@ -32,7 +32,7 @@ export default async function saveTrainingData(
   items: TrainingItems['items'],
 ) {
   try {
-    const itemsWithoutBody = items.map((item) => {
+    const itemsWithoutBody = items.map((item: TrainingItem) => {
       // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
       const { body, ...rest } = item;
       return rest;

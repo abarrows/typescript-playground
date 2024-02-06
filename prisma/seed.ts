@@ -134,10 +134,9 @@ async function main() {
   let labelIndex = 0;
   for (const label of dataLabels) {
     await prisma.labels.upsert({
-      where: { id: labelIndex },
+      where: { name: label.name },
       update: {},
       create: {
-        id: labelIndex,
         categoryId: label.categoryId,
         name: `${label.name}`,
       },
@@ -146,10 +145,9 @@ async function main() {
   }
 
   const item1 = await prisma.trainingItem.upsert({
-    where: { id: 0 },
+    where: { itemId: '1027244033' },
     update: {},
     create: {
-      id: 0,
       itemId: '1027244033',
       title: '2020 Process Improvements (IN PROGRESS)',
       excerpt:
@@ -172,10 +170,9 @@ async function main() {
   });
 
   const item2 = await prisma.trainingItem.upsert({
-    where: { id: 1 },
+    where: { itemId: '1027244034' },
     update: {},
     create: {
-      id: 1,
       itemId: '1027244034',
       title: 'Digital Products ­ Critical First 5 Steps',
       excerpt:

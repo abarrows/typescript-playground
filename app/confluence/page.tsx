@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { TrainingItem } from 'types/training-items';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
+import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
 
 export const metadata: Metadata = {
   title: 'Confluence Article List',
@@ -33,8 +34,9 @@ export const metadata: Metadata = {
 export default async function Page() {
   // Initial request to confluence API using credentials to search using jql.
   const getItems = await serviceRouteHandler('api/confluence');
-  const dataItems = getItems.populatedItems;
-  saveTrainingData('confluence', dataItems);
+  const dataItems: TrainingItem[] = getItems.populatedItems;
+  // saveTrainingData('confluence', dataItems);
+  saveTrainingDataInDatabase('confluence', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>

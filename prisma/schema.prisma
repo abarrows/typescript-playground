@@ -10,7 +10,7 @@ datasource db {
 }
 
 model labels {
-  id              Int              @id
+  id              Int              @id @default(autoincrement())
   name            String           @unique
   categoryId      Int
   labelCategories label_categories @relation(fields: [categoryId], references: [id])
@@ -18,7 +18,7 @@ model labels {
 }
 
 model trainingItem {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   itemId    String   @unique
   title     String
   url       String
@@ -33,7 +33,7 @@ model trainingItem {
 }
 
 model label_categories {
-  id     Int      @id
+  id     Int      @id @default(autoincrement())
   name   String   @unique
   labels labels[]
 }
