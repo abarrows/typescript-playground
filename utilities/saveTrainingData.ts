@@ -5,7 +5,7 @@ import path from 'path';
 
 import consola from 'consola';
 
-export type Platform = 'confluence' | 'jira' | 'github' | 'google';
+import { Platform, TrainingItem } from '@/types/training-items';
 
 // Now create a type or an interface which is an object containing a platform
 // value and another key called items which is an array of ConfluenceArticles
@@ -14,16 +14,6 @@ type TrainingItems = {
   platform: Platform;
   items: TrainingItem[];
 };
-
-export interface TrainingItem {
-  title: string;
-  url: string;
-  body: string | null;
-  id: string;
-  key: string;
-  excerpt: string;
-  labels: string[] | null;
-}
 
 // Create an interface which is an array of TrainingItems
 
@@ -50,7 +40,7 @@ export default async function saveTrainingData(
     );
   }
   // Save all training items from the platform API to a JSON file
-  items.map((item: TrainingItem, index: number) => {
+  items.map((item: TrainingItem) => {
     try {
       // Write the data to a file in the 'training-data' directory
       const filename = `${item.key.replaceAll('/spaces/', '')}-${item.id}.json`;

@@ -28,6 +28,11 @@ const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
       { source: '/ping', destination: '/api/health' },
     ];
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
 });
 
 export default config;

@@ -1,3 +1,5 @@
+import { SearchPageResponseSearchResult } from 'confluence.js/out/api/models';
+import consola from 'consola';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TrainingItem } from 'types/training-items';
@@ -33,10 +35,12 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   // Initial request to confluence API using credentials to search using jql.
-  const getItems = await serviceRouteHandler('api/confluence');
-  const dataItems: TrainingItem[] = getItems.populatedItems;
-  // saveTrainingData('confluence', dataItems);
+  const dataItems: SearchPageResponseSearchResult | null =
+    await serviceRouteHandler('api/confluence');
+  consola.info(`Retrieved ${dataItems.length}`);
+  // saveTrainingDataLabels(dataItems);
   saveTrainingDataInDatabase('confluence', dataItems);
+  // saveTrainingData('confluence', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>
@@ -94,7 +98,7 @@ export default async function Page() {
                             {item.url}
                           </Link>
                         </td>
-                        <td className='pl-1'>{item.labels}</td>
+                        {/* <td className='pl-1'>{item?.labels}</td> */}
                         <td className='font-normal text-left pl-1'></td>
                         <td className='font-normal text-left pl-1'></td>
                         <td className='font-normal text-left pl-1'></td>

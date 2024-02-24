@@ -1,18 +1,14 @@
 import { ConfluenceClient } from 'confluence.js';
 import { Content } from 'confluence.js/out/api';
 import {
-  Label,
   SearchPageResponseSearchResult,
   SearchResult,
 } from 'confluence.js/out/api/models';
 import consola from 'consola';
 import { NextResponse } from 'next/server';
-import { TrainingItem } from 'types/training-items';
+import { BasicAuthentication, RecommendedItem } from 'types/training-items';
 
-type BasicAuthentication = {
-  email: string;
-  apiToken: string;
-};
+import trainingItems from '@/data/training/gpt-recommendations/data.json';
 
 const platform: string = 'confluence';
 
@@ -34,12 +30,13 @@ export async function GET(): Promise<void> {
     const res: SearchPageResponseSearchResult = await client.search.searchByCQL(
       {
         cql: `${process.env.CONFLUENCE_API_QUERY}`,
-        limit: 2,
+        limit: 10,
         expand: ['body.view', 'metadata.labels'],
       },
     );
     const items: SearchResult[] = res.results;
-    const populatedItems: TrainingItem[] = [];
+    const recommendedItems = trainingItems.items;
+    const populatedItems: RecommendedItem[] = [];
     // Iterate through results and normalize into the training data format.
     const normalizedItems = async (items: SearchResult[]) => {
       // Add index to each item
@@ -48,10 +45,14 @@ export async function GET(): Promise<void> {
           id: item.content.id,
           expand: ['body.view', 'metadata.labels'],
         });
-        consola.info(`Item: ${item.content.title}`);
-        const populatedItem = itemContents && {
-          itemId: item.content.id,
+        // Bringing in the hardcoded
+        const matchingRecommendedItem: RecommendedItem | null | undefined =
+          recommendedItems.find(
+            (recommendedItem) => recommendedItem?.itemId === item.content.id,
+          );
+        const populatedItem: RecommendedItem = itemContents && {
           id: index,
+          itemId: item.content.id,
           updatedAt: new Date(),
           createdAt: new Date(),
           key: item.resultGlobalContainer.displayUrl,
@@ -62,10 +63,30 @@ export async function GET(): Promise<void> {
             /<(?!br\s*\/?)[^>]+>/gi,
             '',
           ),
-          labels: itemContents.metadata.labels.results
-            .map((label: Label) => label.name)
-            .join(', '),
+          labels: [
+            ...(matchingRecommendedItem?.proficiencies?.map(
+              (label: string) => ({
+                name: label,
+                categoryId: 0,
+              }),
+            ) || []),
+            ...(matchingRecommendedItem?.tools?.map((label: string) => ({
+              name: label,
+              categoryId: 1,
+            })) || []),
+            ...(matchingRecommendedItem?.advancedSkills?.map(
+              (label: string) => ({
+                name: label,
+                categoryId: 2,
+              }),
+            ) || []),
+            ...(itemContents?.metadata?.labels?.results.map((label: any) => ({
+              name: label.name,
+              categoryId: 3,
+            })) || []),
+          ],
         };
+
         if (item.content.id) populatedItems.push(populatedItem);
       }
 
@@ -85,7 +106,7 @@ export async function GET(): Promise<void> {
     };
     await normalizedItems(items);
 
-    return NextResponse.json({ populatedItems });
+    return NextResponse.json(populatedItems);
   } catch (error) {
     consola.error(new Error(`Failed to fetch from ${platform} API:`), error);
   }

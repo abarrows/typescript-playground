@@ -11,10 +11,12 @@ datasource db {
 
 model labels {
   id              Int              @id @default(autoincrement())
-  name            String           @unique
+  name            String
   categoryId      Int
   labelCategories label_categories @relation(fields: [categoryId], references: [id])
   trainingItem    trainingItem[]   @relation("LabelToTrainingItem")
+
+  @@unique([name, categoryId])
 }
 
 model trainingItem {

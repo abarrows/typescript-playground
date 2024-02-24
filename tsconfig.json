@@ -8,6 +8,7 @@
       // "src/*": ["src/*"],
       // "src/components/*": ["@/src/app/components/*"],
       // "*.module.scss": ["*.module.scss"],
+      "@/types/*": ["types/*"],
       "@/data/*": ["data/*"],
       "@/helpers/*": ["helpers/*"],
       "@/modules/*": ["components/modules/*"],
@@ -39,5 +40,13 @@
   },
   "display": "Next.js",
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mjs", "jest.config.js", ".next/types/**/*.ts"]
+  "include": [
+    "global.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mjs",
+    "jest.config.js",
+    ".next/types/**/*.ts"
+  ]
 }
