@@ -28,7 +28,7 @@ model trainingItem {
   key       String
   excerpt   String
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
   labels    labels[] @relation("LabelToTrainingItem")
 
   @@map("training_items")

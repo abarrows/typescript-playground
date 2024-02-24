@@ -1,7 +1,7 @@
 // Generate a unique filename, e.g., based on the current timestamp
 import consola from 'consola';
 
-import { Platform, RecommendedItem } from '@/types/training-items';
+import { Label, Platform, RecommendedItem } from '@/types/training-items';
 import { database } from '@/utilities/prisma';
 
 // Convert the labels to the correct format for the database
@@ -25,8 +25,9 @@ export default async function saveTrainingDataInDatabase(
   // Set the default value for each of the labels, proficiencies, tools,
   // advancedSkills to an empty array.
   for (const item of items) {
-    const { labels, ...itemWithoutLabels } = item;
+    const { id, labels, ...itemWithoutLabels } = item;
     consola.trace(`The item is ${item}`);
+    consola.log(`The id is: ${id}`);
     // Assign all original labels to categoryId 3
     // const groupedLabels = [
     //   ...labels,
@@ -36,23 +37,10 @@ export default async function saveTrainingDataInDatabase(
     // ];
 
     // Remove any blank labels
-    // const allLabels: Label[] = groupedLabels.filter(
-    //   (label) => label.name !== '',
-    // );
-    for (const label of labels) {
-      const existingLabel = await database.labels.findFirst({
-        where: {
-          id: label.id,
-        },
-      });
-      if (existingLabel) {
-        consola.trace(
-          `Label ${existingLabel.name} already exists, removing it.`,
-        );
-        // Remove the label from the array
-        labels.splice(labels.indexOf(label), 1);
-      }
-    }
+    // for (const label of labels) {
+    const filteredLabels: Label[] = await labels.filter(
+      (label) => label.name !== '',
+    );
 
     // Save the entire training item to the database
     await database.trainingItem.upsert({
@@ -61,14 +49,17 @@ export default async function saveTrainingDataInDatabase(
       create: {
         ...itemWithoutLabels,
         labels: {
-          connectOrCreate: labels.map((label) => ({
+          connectOrCreate: filteredLabels.map((label) => ({
             where: {
               name_categoryId: {
                 name: label.name,
                 categoryId: label.categoryId,
               },
             },
-            create: { name: label.name, categoryId: label.categoryId },
+            create: {
+              name: label.name,
+              categoryId: label.categoryId,
+            },
           })),
         },
       },

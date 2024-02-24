@@ -30,7 +30,7 @@ export async function GET(): Promise<void> {
     const res: SearchPageResponseSearchResult = await client.search.searchByCQL(
       {
         cql: `${process.env.CONFLUENCE_API_QUERY}`,
-        limit: 10,
+        limit: 210,
         expand: ['body.view', 'metadata.labels'],
       },
     );
@@ -53,8 +53,6 @@ export async function GET(): Promise<void> {
         const populatedItem: RecommendedItem = itemContents && {
           id: index,
           itemId: item.content.id,
-          updatedAt: new Date(),
-          createdAt: new Date(),
           key: item.resultGlobalContainer.displayUrl,
           url: `${process.env.CONFLUENCE_DOMAIN}/wiki/${item.url}`,
           title: item.title,

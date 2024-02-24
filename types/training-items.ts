@@ -26,8 +26,6 @@ export interface TrainingItem {
   url: string;
   body: string | null;
   itemId: string;
-  createdAt: Date;
-  updatedAt: Date;
   id: number | null;
   key: string;
   excerpt: string | '';
