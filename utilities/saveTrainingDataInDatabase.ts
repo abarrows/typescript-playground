@@ -28,13 +28,6 @@ export default async function saveTrainingDataInDatabase(
     const { id, labels, ...itemWithoutLabels } = item;
     consola.trace(`The item is ${item}`);
     consola.log(`The id is: ${id}`);
-    // Assign all original labels to categoryId 3
-    // const groupedLabels = [
-    //   ...labels,
-    //   ...proficiencies,
-    //   ...tools,
-    //   ...advancedSkills,
-    // ];
 
     // Remove any blank labels
     // for (const label of labels) {

@@ -1,13 +1,10 @@
-import consola from 'consola';
 import { Search } from 'jira.js/out/version2/parameters';
-import { Issue } from 'jira.js/out/version3/models';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import bodyToMarkdown from '@/utilities/bodyToMarkdown';
-import saveTrainingData, { TrainingItem } from '@/utilities/saveTrainingData';
+import { Label, RecommendedItem } from '@/types/training-items';
 
 export const metadata: Metadata = {
   title: 'Jira Issues List',
@@ -27,40 +24,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const getJiraResults: Search | void = serviceRouteHandler('api/jira');
-  const dataJiraResults: unknown | void = await getJiraResults;
-  consola.log(dataJiraResults);
-
-  const normalizedJiraIssues = dataJiraResults.issues.map(
-    (issue: Issue): TrainingItem => {
-      // Push each issue with only the selected fields into the
-      // normalizedJiraResults array.
-
-      // Use the function
-      const markdownDescription = issue.fields.description
-        ? bodyToMarkdown(issue.fields.description)
-        : '';
-      return {
-        id: issue.id,
-        key: issue.key,
-        url: `${process.env.JIRA_DOMAIN}/browse/${issue.key}`,
-        title: issue.fields.summary,
-        body: markdownDescription,
-        excerpt: issue.fields.summary,
-        labels: issue.fields.labels,
-      };
-    },
-  );
-  consola.log(normalizedJiraIssues);
-  // Iterate through dataJiraResults and for each issue, use the following field
-  // values to create a new object:
-  // issue.id
-  // issue.key
-  // issue.fields.summary
-  // issue.fields.description
+  const dataItems: Promise<Search> = await serviceRouteHandler('api/jira');
+  console.log(typeof dataItems);
+  // consola.info(`Retrieved ${dataItems?.length}`);
 
   // Save the Jira Articles to files
-  saveTrainingData('jira', normalizedJiraIssues);
 
   return (
     <>
@@ -95,51 +63,44 @@ export default async function Page() {
                   </tr>
                 </thead>
                 <tbody className='w-full'>
-                  {normalizedJiraIssues &&
-                    normalizedJiraIssues.map(
-                      (item: TrainingItem, index: number) => (
-                        <tr
-                          className='h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-y border-gray-100'
-                          key={`${index}-${item.id}-${item.key}`}
-                        >
-                          <td className='pl-1 cursor-pointer'>{index}</td>
-                          <td className='pl-1'>{item.id}</td>
-                          <td className='pl-1'>{item.key}</td>
-                          <td className='pl-1'>
-                            {item.title}
-                            <br />
-                            <br />
-                            {item.body && (
-                              <Article>{JSON.stringify(item.body)}</Article>
-                            )}
-                          </td>
-                          <td className='pl-1'>
-                            <Link
-                              href={item.url}
-                              target='_blank'
-                              rel='noreferrer'
-                            >
-                              {item.url}
-                            </Link>
-                          </td>
-                          <td className='pl-1'>
-                            {item.labels.map((label: string) => (
-                              <h6 className='label' key={label}>
-                                {label}
-                              </h6>
-                            ))}
-                          </td>
-                          <td className='font-normal text-left pl-1'></td>
-                          <td className='font-normal text-left pl-1'></td>
-                          <td className='font-normal text-left pl-1'></td>
-                          {/* <td className='pl-7'>
+                  {dataItems?.map((item: RecommendedItem, index: number) => (
+                    <tr
+                      className='h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-y border-gray-100'
+                      key={`${index}-${item.id}-${item.key}`}
+                    >
+                      <td className='pl-1 cursor-pointer'>{index}</td>
+                      <td className='pl-1'>{item.id}</td>
+                      <td className='pl-1'>{item.key}</td>
+                      <td className='pl-1'>
+                        {item.title}
+                        <br />
+                        <br />
+                        {item.body && (
+                          <Article>{JSON.stringify(item.body)}</Article>
+                        )}
+                      </td>
+                      <td className='pl-1'>
+                        <Link href={item.url} target='_blank' rel='noreferrer'>
+                          {item.url}
+                        </Link>
+                      </td>
+                      <td className='pl-1'>
+                        {item.labels.map((label: Label) => (
+                          <h6 className='label' key={label.name}>
+                            {label.name} {label.categoryId}
+                          </h6>
+                        ))}
+                      </td>
+                      <td className='font-normal text-left pl-1'></td>
+                      <td className='font-normal text-left pl-1'></td>
+                      <td className='font-normal text-left pl-1'></td>
+                      {/* <td className='pl-7'>
                             {item.body && (
                               <Article>{JSON.stringify(item.body)}</Article>
                             )}
                           </td> */}
-                        </tr>
-                      ),
-                    )}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
