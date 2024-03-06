@@ -40,7 +40,7 @@ export async function GET(): Promise<void> {
     const res: JiraApiResponse =
       await client.issueSearch.searchForIssuesUsingJql({
         jql: 'labels="acb-review"',
-        maxResults: 10,
+        maxResults: 100,
         fields: ['*navigable'],
       });
     const data = await res;

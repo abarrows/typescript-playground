@@ -5,29 +5,25 @@ import path from 'path';
 
 import consola from 'consola';
 
-import { Platform, TrainingItem } from '@/types/training-items';
+import { Platform, RecommendedItem, TrainingItem } from '@/types/training-items';
 
 // Now create a type or an interface which is an object containing a platform
 // value and another key called items which is an array of ConfluenceArticles
 
-type TrainingItems = {
-  platform: Platform;
-  items: TrainingItem[];
-};
 
 // Create an interface which is an array of TrainingItems
 
 export default async function saveTrainingData(
   platform: Platform,
-  items: TrainingItems['items'],
+  items: RecommendedItem[],
 ) {
   try {
-    const itemsWithoutBody = items.map((item: TrainingItem) => {
-      // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-      const { body, ...rest } = item;
-      return rest;
-    });
-    const itemsInJson = JSON.stringify(itemsWithoutBody, null, 2);
+    // const itemsWithoutBody = items.map((item: TrainingItem) => {
+    //   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+    //   const { body, ...rest } = item;
+    //   return rest;
+    // });
+    const itemsInJson = JSON.stringify(items, null, 2);
     fs.writeFileSync(
       `data/training/${platform}/data-all.json`,
       itemsInJson,

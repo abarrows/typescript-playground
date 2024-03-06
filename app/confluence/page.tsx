@@ -7,6 +7,7 @@ import { TrainingItem } from 'types/training-items';
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
 import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
+import saveTrainingData from '@/utilities/saveTrainingData';
 
 export const metadata: Metadata = {
   title: 'Confluence Article List',
@@ -40,7 +41,7 @@ export default async function Page() {
   consola.info(`Retrieved ${dataItems.length}`);
   // saveTrainingDataLabels(dataItems);
   saveTrainingDataInDatabase('confluence', dataItems);
-  // saveTrainingData('confluence', dataItems);
+  saveTrainingData('confluence', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>
