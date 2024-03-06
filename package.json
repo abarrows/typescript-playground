@@ -6,6 +6,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "scripts": {
+    "prestart": "git pull origin main && yarn check --integrity || echo 'Please address the issues before starting.' && exit 1",
     "analyze": "cross-env ANALYZE=true yarn build",
     "build": "next build",
     "build-storybook": "cross-env FORCE_COLOR=1 storybook build",
@@ -150,6 +151,7 @@
     "prettier-plugin-tailwindcss": "^0.5.7",
     "prisma": "^5.9.0",
     "semantic-release": "^22.0.8",
+    "server-only": "^0.0.1",
     "storybook": "^7.5.3",
     "tailwindcss": "^3.3.5",
     "ts-jest": "^29.1.1",
