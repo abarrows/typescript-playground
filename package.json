@@ -6,7 +6,14 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "scripts": {
-    "prestart": "git pull origin main && yarn check --integrity || echo 'Please address the issues before starting.' && exit 1",
+    "check": "echo 'Checking your branch for dependencies that have not been installed yet. Running now: yarn install...' && yarn install",
+    "dev": "cross-env FORCE_COLOR=1 yarn run check && next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "analyze": "cross-env ANALYZE=true yarn build",
     "build": "next build",
     "build-storybook": "cross-env FORCE_COLOR=1 storybook build",
