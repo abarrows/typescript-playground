@@ -38,7 +38,7 @@ export default async function saveTrainingDataInDatabase(
     // Save the entire training item to the database
     await database.trainingItem.upsert({
       where: { itemId: itemWithoutLabels.itemId },
-      update: { itemId: item.itemId },
+      update: {},
       create: {
         ...itemWithoutLabels,
         labels: {

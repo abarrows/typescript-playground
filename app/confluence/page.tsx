@@ -6,8 +6,8 @@ import { TrainingItem } from 'types/training-items';
 
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
-import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
 import saveTrainingData from '@/utilities/saveTrainingData';
+import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
 
 export const metadata: Metadata = {
   title: 'Confluence Article List',

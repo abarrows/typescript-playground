@@ -5,8 +5,8 @@ import Link from 'next/link';
 import Article from '@/components/Article/Article';
 import serviceRouteHandler from '@/components/serviceRouteHandler';
 import { Label, RecommendedItem } from '@/types/training-items';
-import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
 import saveTrainingData from '@/utilities/saveTrainingData';
+import saveTrainingDataInDatabase from '@/utilities/saveTrainingDataInDatabase';
 
 export const metadata: Metadata = {
   title: 'Jira Issues List',
@@ -32,7 +32,7 @@ export default async function Page() {
 
   // Save the Jira Articles to database
   saveTrainingDataInDatabase('jira', dataItems);
-  saveTrainingData('jira', dataItems)
+  saveTrainingData('jira', dataItems);
   return (
     <>
       <section className='bg-white dark:bg-gray-900'>

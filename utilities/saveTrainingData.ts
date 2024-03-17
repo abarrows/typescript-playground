@@ -5,11 +5,14 @@ import path from 'path';
 
 import consola from 'consola';
 
-import { Platform, RecommendedItem, TrainingItem } from '@/types/training-items';
+import {
+  Platform,
+  RecommendedItem,
+  TrainingItem,
+} from '@/types/training-items';
 
 // Now create a type or an interface which is an object containing a platform
 // value and another key called items which is an array of ConfluenceArticles
-
 
 // Create an interface which is an array of TrainingItems
 

@@ -1,3 +1,3 @@
-import serviceRouteHandler from "./serviceRouteHandler"
+import serviceRouteHandler from './serviceRouteHandler';
 
-export default serviceRouteHandler
+export default serviceRouteHandler;
