@@ -73,19 +73,19 @@ export async function GET(): Promise<void> {
         labels: [
           // ...(matchingRecommendedItem?.proficiencies?.map((label: string) => ({
           //   name: label,
-          //   categoryId: 0,
+          //   categoryName: 'proficiencies',
           // })) || []),
           // ...(matchingRecommendedItem?.tools?.map((label: string) => ({
           //   name: label,
-          //   categoryId: 1,
+          //   categoryName: 'tools',
           // })) || []),
           // ...(matchingRecommendedItem?.advancedSkills?.map((label: string) => ({
           //   name: label,
-          //   categoryId: 2,
+          //   categoryName: 'advancedSkills',
           // })) || []),
           ...(item?.fields?.labels?.map((label: Labels) => ({
             name: label,
-            categoryId: 3,
+            categoryName: 'original',
           })) || []),
         ],
       };

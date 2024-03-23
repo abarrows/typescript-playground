@@ -36,27 +36,34 @@ export default async function saveTrainingDataInDatabase(
     );
 
     // Save the entire training item to the database
-    await database.trainingItem.upsert({
-      where: { itemId: itemWithoutLabels.itemId },
-      update: {},
-      create: {
-        ...itemWithoutLabels,
-        labels: {
-          connectOrCreate: filteredLabels.map((label) => ({
-            where: {
-              name_categoryId: {
-                name: label.name,
-                categoryId: label.categoryId,
+    // Do this in a try catch block
+    try {
+      await database.trainingItem.upsert({
+        where: { itemId: itemWithoutLabels.itemId },
+        update: {},
+        create: {
+          ...itemWithoutLabels,
+          labels: {
+            connectOrCreate: filteredLabels.map((label) => ({
+              where: {
+                name_categoryName: {
+                  name: label.name,
+                  categoryName: label.categoryName,
+                },
               },
-            },
-            create: {
-              name: label.name,
-              categoryId: label.categoryId,
-            },
-          })),
+              create: {
+                name: label.name.toLowerCase(),
+                categoryName: label.categoryName,
+              },
+            })),
+          },
         },
-      },
-    });
+      });
+    } catch {
+      consola.error(
+        `Error saving training items from ${itemWithoutLabels.title} API to the database.  The labels were ${filteredLabels}`,
+      );
+    }
     consola.info(
       `Saved training items from ${itemWithoutLabels.title} API to the database`,
     );

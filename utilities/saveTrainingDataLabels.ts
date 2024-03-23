@@ -24,7 +24,7 @@
 //     const existingLabel: Label | null = await database.labels.findFirst({
 //       where: {
 //         name: label.name,
-//         categoryId: label.categoryId,
+//         categoryName: label.categoryName,
 //       },
 //     });
 //     if (!existingLabel) {
@@ -32,16 +32,16 @@
 //         `Label ${label.name} did NOT exist in the database, creating it now.`,
 //       );
 //       const createLabel: labels = await database.labels.upsert({
-//         where: { name: `${label.name}`, categoryId: label.categoryId },
+//         where: { name: `${label.name}`, categoryName: label.categoryName },
 //         update: {},
 //         create: {
 //           name: `${label.name}`,
-//           categoryId: label.categoryId,
+//           categoryName: label.categoryName,
 //         },
 //       });
 //     } else {
 //       consola.log(
-//         `Label "${label.name}" already existed for item: ${label.categoryId} in the database.`,
+//         `Label "${label.name}" already existed for item: ${label.categoryName} in the database.`,
 //       );
 //     }
 //   }

@@ -13,7 +13,7 @@ export type TrainingItems = {
 };
 
 export type Label = {
-  categoryId: number;
+  categoryName: 'proficiencies' | 'tools' | 'advancedSkills' | 'labels';
   name: string;
 };
 

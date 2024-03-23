@@ -32,11 +32,14 @@ async function main() {
   for (const label of dataLabels) {
     await database.labels.upsert({
       where: {
-        name_categoryId: { name: label.name, categoryId: label.categoryId },
+        name_categoryName: {
+          name: label.name,
+          categoryName: label.categoryName,
+        },
       },
       update: {},
       create: {
-        categoryId: label.categoryId,
+        categoryName: label.categoryName,
         name: `${label.name}`,
       },
     });

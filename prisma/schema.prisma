@@ -4,19 +4,19 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("DATABASE_REMOTE_URL")
-  directUrl         = env("DATABASE_REMOTE_URL")
-  shadowDatabaseUrl = env("DATABASE_REMOTE_URL")
+  url               = env("DATABASE_LOCAL_URL")
+  directUrl         = env("DATABASE_LOCAL_URL")
+  shadowDatabaseUrl = env("DATABASE_LOCAL_URL")
 }
 
 model labels {
   id              Int              @id @default(autoincrement())
   name            String
-  categoryId      Int
-  labelCategories label_categories @relation(fields: [categoryId], references: [id])
+  categoryName    String
+  labelCategories label_categories @relation(fields: [categoryName], references: [name])
   trainingItem    trainingItem[]   @relation("LabelToTrainingItem")
 
-  @@unique([name, categoryId])
+  @@unique([name, categoryName])
 }
 
 model trainingItem {

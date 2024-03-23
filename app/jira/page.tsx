@@ -90,7 +90,7 @@ export default async function Page() {
                       <td className='pl-1'>
                         {item.labels.map((label: Label) => (
                           <h6 className='label' key={label.name}>
-                            {label.name} {label.categoryId}
+                            {label.name} {label.categoryName}
                           </h6>
                         ))}
                       </td>
